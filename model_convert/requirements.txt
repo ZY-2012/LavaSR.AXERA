@@ -1,0 +1,10 @@
+torch
+torchaudio
+librosa
+soundfile
+numpy
+onnx
+onnxruntime
+onnxsim
+pyyaml
+vocos @ git+https://github.com/langtech-bsc/vocos.git@matcha
