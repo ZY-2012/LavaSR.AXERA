@@ -42,16 +42,28 @@ embedded assets:
 
 | input | duration | denoise | time | RTF |
 |---|---:|---|---:|---:|
-| LibriSpeech 16 kHz | 17.75 s | yes | 4.22 s | **0.238** |
-| LibriSpeech 16 kHz | 17.75 s | no | 2.52 s | **0.142** |
+| LibriSpeech 16 kHz | 17.75 s | yes | 2.51 s | **0.141** |
+| LibriSpeech 16 kHz | 17.75 s | no | 1.89 s | **0.106** |
 
-C++ host breakdown: denoiser 1.72 s, BWE 1.43 s, LR merge 1.04 s, resampling
-0.04 s. After replacing scalar `std::exp/cos/sin/abs` with the float intrinsics,
-using KissFFT for the BWE mel/iSTFT/LR merge and adding `-O3 -ffast-math`, the
-C++ full pipeline (denoise + BWE) is now faster than Python (0.238 vs 0.278).
-For **BWE-only** Python remains faster (0.103 vs 0.142): numpy's BLAS/pocketfft
-mel + iSTFT path is extremely well optimized, while the C++ mel matmul is still
-a scalar loop.
+C++ host breakdown (8 threads): denoiser 0.61 s, BWE mel/iSTFT 0.81 s, LR merge
+1.02 s, resampling 0.04 s. The remaining dominant stage is the full-length LR
+merge FFT.
+
+### 为什么最初的 C++ 反而比 Python 慢？
+
+NPU 部分两者完全相同且只占 ~0.24 s；RTF 由主机 DSP 决定。最初的 C++ 实现是
+逐标量循环：`std::exp/cos/sin/abs` 经常走 double 版本、mel 矩阵乘没有 BLAS、
+FFT 使用未优化的 radix-2；而 Python/numpy 的 pocketfft 和 BLAS 都是高度优化
+的 C/Fortran 实现。因此“C++ 语言更快”并不自动成立。
+
+优化过程：
+1. `expf/cosf/sinf/logf` + 直接复数模 + `-O3 -ffast-math`；
+2. KissFFT 替换 mel/iSTFT/LR merge 的 radix-2；
+3. mel 滤波器转置，改善 cache；
+4. OpenMP 并行：mel/iSTFT/STFT/ERB/DPGRNN 按帧或 batch 分工（Cortex-A55 8 核）。
+
+优化后 C++ 全链路 RTF 0.141，快于 Python 0.278；仅 BWE 时 C++ 0.106 与
+Python 0.103 基本持平。
 
 ### 为什么最初的 C++ 反而比 Python 慢？
 

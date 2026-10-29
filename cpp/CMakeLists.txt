@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden -g -O0")
 else()
-    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -O3 -ffast-math -funroll-loops -fdata-sections -ffunction-sections")
+    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -O3 -ffast-math -funroll-loops -fopenmp -fdata-sections -ffunction-sections")
 endif()
 
 if(AX650)
@@ -28,7 +28,7 @@ endif()
 include_directories(${CMAKE_SOURCE_DIR})
 
 add_executable(lavasr_ax650 main.cpp assets.cpp third_party/kissfft/kiss_fft.c third_party/kissfft/kiss_fftr.c)
-target_link_libraries(lavasr_ax650 ${MSP_LIBS} pthread m)
+target_link_libraries(lavasr_ax650 ${MSP_LIBS} pthread m gomp)
 
 install(TARGETS lavasr_ax650 RUNTIME DESTINATION ./)
 set_target_properties(lavasr_ax650 PROPERTIES INSTALL_RPATH "$ORIGIN/")

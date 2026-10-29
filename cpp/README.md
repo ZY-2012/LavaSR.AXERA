@@ -26,13 +26,14 @@ export LD_LIBRARY_PATH=/soc/lib:$LD_LIBRARY_PATH
 ```
 
 `--bench` averages 3 runs. `LAVASR_PROFILE=1` prints stage timings.
+The build uses OpenMP (Cortex-A55 8 cores) for the frame/batch-parallel host DSP.
 
 ## Results (AX650N, NPU3)
 
 | input | denoise | time | RTF |
 |---|---:|---:|---:|
-| LibriSpeech 17.75 s | yes | 4.22 s | 0.238 |
-| LibriSpeech 17.75 s | no | 2.52 s | 0.142 |
+| LibriSpeech 17.75 s | yes | 2.51 s | 0.141 |
+| LibriSpeech 17.75 s | no | 1.89 s | 0.106 |
 
 C++ vs ONNX reference: SNR 46.0 dB (denoise) / 47.6 dB (no denoise).
 

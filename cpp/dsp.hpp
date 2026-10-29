@@ -181,11 +181,17 @@ inline std::vector<float> den_istft(const std::vector<std::complex<float>>& spec
     const int frames = static_cast<int>(spec.size()) / kDenBins;
     const int total = (frames - 1) * kDenHop + kDenWin;
     std::vector<float> y(total, 0.0f), env(total, 0.0f);
+    std::vector<float> all(static_cast<size_t>(frames) * kDenWin);
+#pragma omp parallel for schedule(static)
     for (int t = 0; t < frames; ++t) {
         const auto frame = irfft(std::vector<std::complex<float>>(
             spec.begin() + static_cast<size_t>(t) * kDenBins,
             spec.begin() + static_cast<size_t>(t + 1) * kDenBins), kDenWin);
+        std::copy(frame.begin(), frame.end(), all.begin() + static_cast<size_t>(t) * kDenWin);
+    }
+    for (int t = 0; t < frames; ++t) {
         const int off = t * kDenHop;
+        const float* frame = all.data() + static_cast<size_t>(t) * kDenWin;
         for (int i = 0; i < kDenWin; ++i) {
             y[off + i] += frame[i] * win[i];
             env[off + i] += win[i] * win[i];
@@ -228,12 +234,16 @@ inline std::vector<std::complex<double>> den_stft_d(const std::vector<float>& x,
     const auto padded = reflect_pad(x, kDenWin / 2, kDenWin / 2);
     const int frames = (static_cast<int>(padded.size()) - kDenWin) / kDenHop + 1;
     std::vector<std::complex<double>> spec(static_cast<size_t>(frames) * kDenBins);
-    std::vector<float> frame(kDenWin);
-    for (int t = 0; t < frames; ++t) {
-        const int off = t * kDenHop;
-        for (int i = 0; i < kDenWin; ++i) frame[i] = padded[off + i] * win[i];
-        const auto s = rfft_d(frame.data(), kDenWin);
-        std::copy(s.begin(), s.end(), spec.begin() + static_cast<size_t>(t) * kDenBins);
+#pragma omp parallel
+    {
+        std::vector<float> frame(kDenWin);
+#pragma omp for schedule(static)
+        for (int t = 0; t < frames; ++t) {
+            const int off = t * kDenHop;
+            for (int i = 0; i < kDenWin; ++i) frame[i] = padded[off + i] * win[i];
+            const auto s = rfft_d(frame.data(), kDenWin);
+            std::copy(s.begin(), s.end(), spec.begin() + static_cast<size_t>(t) * kDenBins);
+        }
     }
     return spec;
 }
@@ -242,20 +252,24 @@ inline std::vector<float> den_features_d(const std::vector<std::complex<double>>
                                          const float* erb_fc) {
     const int frames = static_cast<int>(spec.size()) / kDenBins;
     std::vector<float> feat(static_cast<size_t>(frames) * kErbBins);
-    std::vector<double> logmag(kDenBins);
-    for (int t = 0; t < frames; ++t) {
-        const auto* s = spec.data() + static_cast<size_t>(t) * kDenBins;
-        for (int k = 0; k < kDenBins; ++k) {
-            const double m = std::max(std::abs(s[k]), 1e-12);
-            logmag[k] = std::log10(m);
-        }
-        float* out = feat.data() + static_cast<size_t>(t) * kErbBins;
-        for (int k = 0; k < kErbLow; ++k) out[k] = static_cast<float>(logmag[k]);
-        for (int m = 0; m < kErbHigh; ++m) {
-            double acc = 0.0;
-            const float* row = erb_fc + static_cast<size_t>(m) * (kDenBins - kErbLow);
-            for (int k = 0; k < kDenBins - kErbLow; ++k) acc += logmag[kErbLow + k] * row[k];
-            out[kErbLow + m] = static_cast<float>(acc);
+#pragma omp parallel
+    {
+        std::vector<double> logmag(kDenBins);
+#pragma omp for schedule(static)
+        for (int t = 0; t < frames; ++t) {
+            const auto* s = spec.data() + static_cast<size_t>(t) * kDenBins;
+            for (int k = 0; k < kDenBins; ++k) {
+                const double m = std::max(std::abs(s[k]), 1e-12);
+                logmag[k] = std::log10(m);
+            }
+            float* out = feat.data() + static_cast<size_t>(t) * kErbBins;
+            for (int k = 0; k < kErbLow; ++k) out[k] = static_cast<float>(logmag[k]);
+            for (int m = 0; m < kErbHigh; ++m) {
+                double acc = 0.0;
+                const float* row = erb_fc + static_cast<size_t>(m) * (kDenBins - kErbLow);
+                for (int k = 0; k < kDenBins - kErbLow; ++k) acc += logmag[kErbLow + k] * row[k];
+                out[kErbLow + m] = static_cast<float>(acc);
+            }
         }
     }
     return feat;
@@ -263,6 +277,7 @@ inline std::vector<float> den_features_d(const std::vector<std::complex<double>>
 
 inline std::vector<float> den_mask_expand(const float* mask, int frames, const float* ierb_fc) {
     std::vector<float> out(static_cast<size_t>(frames) * kDenBins);
+#pragma omp parallel for schedule(static)
     for (int t = 0; t < frames; ++t) {
         const float* m = mask + static_cast<size_t>(t) * kErbBins;
         float* o = out.data() + static_cast<size_t>(t) * kDenBins;
@@ -283,8 +298,6 @@ inline std::vector<float> mel_features(const std::vector<float>& x, const float*
     const auto padded = reflect_pad(x, pad, pad);
     const int frames = (static_cast<int>(padded.size()) - kBweNfft) / kBweHop + 1;
     std::vector<float> feat(static_cast<size_t>(kMels) * frames);
-    std::vector<float> frame(kBweNfft), mag(kBweBins);
-    static RealFFT fft(kBweNfft);
     static std::vector<float> fb_t;
     if (fb_t.empty()) {
         fb_t.resize(static_cast<size_t>(kMels) * kBweBins);
@@ -292,17 +305,26 @@ inline std::vector<float> mel_features(const std::vector<float>& x, const float*
             for (int m = 0; m < kMels; ++m)
                 fb_t[static_cast<size_t>(m) * kBweBins + k] = fb[static_cast<size_t>(k) * kMels + m];
     }
-    std::vector<std::complex<float>> spec;
-    for (int t = 0; t < frames; ++t) {
-        const int off = t * kBweHop;
-        for (int i = 0; i < kBweNfft; ++i) frame[i] = padded[off + i] * win[i];
-        fft.forward(frame.data(), spec);
-        for (int k = 0; k < kBweBins; ++k) { const float re = spec[k].real(), im = spec[k].imag(); mag[k] = std::sqrt(re * re + im * im); }
-        for (int m = 0; m < kMels; ++m) {
-            const float* row = fb_t.data() + static_cast<size_t>(m) * kBweBins;
-            float acc = 0.0f;
-            for (int k = 0; k < kBweBins; ++k) acc += mag[k] * row[k];
-            feat[static_cast<size_t>(m) * frames + t] = logf(std::max(acc, 1e-5f));
+#pragma omp parallel
+    {
+        RealFFT fft(kBweNfft);
+        std::vector<float> frame(kBweNfft), mag(kBweBins);
+        std::vector<std::complex<float>> spec;
+#pragma omp for schedule(static)
+        for (int t = 0; t < frames; ++t) {
+            const int off = t * kBweHop;
+            for (int i = 0; i < kBweNfft; ++i) frame[i] = padded[off + i] * win[i];
+            fft.forward(frame.data(), spec);
+            for (int k = 0; k < kBweBins; ++k) {
+                const float re = spec[k].real(), im = spec[k].imag();
+                mag[k] = std::sqrt(re * re + im * im);
+            }
+            for (int m = 0; m < kMels; ++m) {
+                const float* row = fb_t.data() + static_cast<size_t>(m) * kBweBins;
+                float acc = 0.0f;
+                for (int k = 0; k < kBweBins; ++k) acc += mag[k] * row[k];
+                feat[static_cast<size_t>(m) * frames + t] = logf(std::max(acc, 1e-5f));
+            }
         }
     }
     return feat;
@@ -333,13 +355,22 @@ inline std::vector<float> bwe_istft(const std::vector<std::complex<float>>& spec
     const int frames = static_cast<int>(spec.size()) / kBweBins;
     const int total = (frames - 1) * kBweHop + kBweWin;
     std::vector<float> y(total, 0.0f), env(total, 0.0f);
-    static RealFFT fft(kBweNfft);
+    std::vector<float> all(static_cast<size_t>(frames) * kBweWin);
+#pragma omp parallel
+    {
+        RealFFT fft(kBweNfft);
+        std::vector<std::complex<float>> one(kBweBins);
+#pragma omp for schedule(static)
+        for (int t = 0; t < frames; ++t) {
+            std::copy(spec.begin() + static_cast<size_t>(t) * kBweBins,
+                      spec.begin() + static_cast<size_t>(t + 1) * kBweBins, one.begin());
+            const auto frame = fft.inverse(one);
+            std::copy(frame.begin(), frame.end(), all.begin() + static_cast<size_t>(t) * kBweWin);
+        }
+    }
     for (int t = 0; t < frames; ++t) {
-        const std::vector<std::complex<float>> one(
-            spec.begin() + static_cast<size_t>(t) * kBweBins,
-            spec.begin() + static_cast<size_t>(t + 1) * kBweBins);
-        const auto frame = fft.inverse(one);
         const int off = t * kBweHop;
+        const float* frame = all.data() + static_cast<size_t>(t) * kBweWin;
         for (int i = 0; i < kBweWin; ++i) {
             y[off + i] += frame[i] * win[i];
             env[off + i] += win[i] * win[i];
