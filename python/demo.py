@@ -8,6 +8,7 @@ Usage:
 import argparse
 import os
 import sys
+sys.dont_write_bytecode = True
 import time
 
 import numpy as np

@@ -4,6 +4,7 @@
 set -e
 cd "$(dirname "$0")"
 export LD_LIBRARY_PATH=/soc/lib:${LD_LIBRARY_PATH:-}
+export PYTHONDONTWRITEBYTECODE=1
 
 INPUT="${1:-samples/libri_16k.wav}"
 OUTPUT="${2:-output.wav}"
