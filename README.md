@@ -42,8 +42,8 @@ LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39
 
 | 超分前（16 kHz 升采样到 48 kHz） | LavaSR 超分后（48 kHz） |
 |---|---|
-| <audio controls src="samples/demo_clean_before_48k.wav"></audio> | <audio controls src="samples/demo_clean_after_48k.wav"></audio> |
-| [▶ 播放/下载 before](samples/demo_clean_before_48k.wav) | [▶ 播放/下载 after](samples/demo_clean_after_48k.wav) |
+| <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_before_48k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_after_48k.wav"></audio> |
+| [▶ 在线试听 before](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_before_48k.wav) · [下载 wav](samples/demo_clean_before_48k.wav) | [▶ 在线试听 after](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_after_48k.wav) · [下载 wav](samples/demo_clean_after_48k.wav) |
 
 8–24 kHz 高频能量占比：**-44.8 dB -> -33.4 dB（+11.4 dB）**。
 
@@ -51,12 +51,14 @@ LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39
 
 | 超分前（10 dB SNR 噪声） | LavaSR 降噪+超分后 |
 |---|---|
-| <audio controls src="samples/demo_noisy_before_48k.wav"></audio> | <audio controls src="samples/demo_noisy_after_48k.wav"></audio> |
-| [▶ 播放/下载 before](samples/demo_noisy_before_48k.wav) | [▶ 播放/下载 after](samples/demo_noisy_after_48k.wav) |
+| <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_before_48k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_after_48k.wav"></audio> |
+| [▶ 在线试听 before](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_before_48k.wav) · [下载 wav](samples/demo_noisy_before_48k.wav) | [▶ 在线试听 after](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_after_48k.wav) · [下载 wav](samples/demo_noisy_after_48k.wav) |
 
 低带（<8 kHz）相对干净参考的 SNR：**10.4 dB -> 18.4 dB（+8.0 dB）**。
 
 原始 16 kHz 输入：`samples/demo_clean_16k.wav`、`samples/demo_noisy_16k.wav`。
+
+> 若 GitHub 未渲染播放器，点击“在线试听”会打开 HuggingFace 上的音频（inline 播放）；“下载 wav”为仓库内文件。
 
 ## 架构
 
