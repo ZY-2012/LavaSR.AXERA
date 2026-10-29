@@ -84,7 +84,7 @@ private:
         auto it = m_.find(name);
         return it == m_.end() ? 0 : it->second.size;
     }
-    static float sigmoid(float x) { return 1.0f / (1.0f + std::exp(-x)); }
+    static float sigmoid(float x) { return 1.0f / (1.0f + expf(-x)); }
     static int hidden(const std::string& rnn, int n) {
         return static_cast<int>(std::lround(std::sqrt(n / 3.0)));
     }
@@ -97,44 +97,45 @@ private:
         const float* b_ih = get(p + ".bias_ih_l0" + (reverse ? "_reverse" : ""));
         const float* b_hh = get(p + ".bias_hh_l0" + (reverse ? "_reverse" : ""));
         const int g = 3 * h;
-        std::vector<float> gx(static_cast<size_t>(b) * t * g);
-        for (int bi = 0; bi < b; ++bi) {
-            for (int ti = 0; ti < t; ++ti) {
-                const float* xp = x.data() + (static_cast<size_t>(bi) * t + ti) * in;
-                float* gp = gx.data() + (static_cast<size_t>(bi) * t + ti) * g;
-                for (int gi = 0; gi < g; ++gi) {
-                    float acc = b_ih[gi];
-                    const float* row = w_ih + static_cast<size_t>(gi) * in;
-                    for (int k = 0; k < in; ++k) acc += xp[k] * row[k];
-                    gp[gi] = acc;
-                }
-            }
-        }
-        std::vector<float> hs(static_cast<size_t>(b) * h, 0.0f);
-        std::vector<float> nh(h);
-        for (int step = 0; step < t; ++step) {
-            const int ti = reverse ? (t - 1 - step) : step;
+#pragma omp parallel
+        {
+            std::vector<float> gx(static_cast<size_t>(t) * g);
+            std::vector<float> hs(h, 0.0f), nh(h);
+#pragma omp for schedule(static)
             for (int bi = 0; bi < b; ++bi) {
-                const float* gp = gx.data() + (static_cast<size_t>(bi) * t + ti) * g;
-                float* hp = hs.data() + static_cast<size_t>(bi) * h;
-                for (int hi = 0; hi < h; ++hi) {
-                    float gr = b_hh[hi], gz = b_hh[h + hi], gn = b_hh[2 * h + hi];
-                    const float* rr = w_hh + static_cast<size_t>(hi) * h;
-                    const float* rz = w_hh + static_cast<size_t>(h + hi) * h;
-                    const float* rn = w_hh + static_cast<size_t>(2 * h + hi) * h;
-                    for (int k = 0; k < h; ++k) {
-                        gr += hp[k] * rr[k];
-                        gz += hp[k] * rz[k];
-                        gn += hp[k] * rn[k];
+                for (int ti = 0; ti < t; ++ti) {
+                    const float* xp = x.data() + (static_cast<size_t>(bi) * t + ti) * in;
+                    float* gp = gx.data() + static_cast<size_t>(ti) * g;
+                    for (int gi = 0; gi < g; ++gi) {
+                        float acc = b_ih[gi];
+                        const float* row = w_ih + static_cast<size_t>(gi) * in;
+                        for (int k = 0; k < in; ++k) acc += xp[k] * row[k];
+                        gp[gi] = acc;
                     }
-                    const float r = sigmoid(gp[hi] + gr);
-                    const float z = sigmoid(gp[h + hi] + gz);
-                    const float n = std::tanh(gp[2 * h + hi] + r * gn);
-                    nh[hi] = (1.0f - z) * n + z * hp[hi];
                 }
-                for (int hi = 0; hi < h; ++hi) hp[hi] = nh[hi];
-                float* op = out.data() + (static_cast<size_t>(bi) * t + ti) * out_stride + out_off;
-                for (int hi = 0; hi < h; ++hi) op[hi] = nh[hi];
+                std::fill(hs.begin(), hs.end(), 0.0f);
+                for (int step = 0; step < t; ++step) {
+                    const int ti = reverse ? (t - 1 - step) : step;
+                    const float* gp = gx.data() + static_cast<size_t>(ti) * g;
+                    for (int hi = 0; hi < h; ++hi) {
+                        float gr = b_hh[hi], gz = b_hh[h + hi], gn = b_hh[2 * h + hi];
+                        const float* rr = w_hh + static_cast<size_t>(hi) * h;
+                        const float* rz = w_hh + static_cast<size_t>(h + hi) * h;
+                        const float* rn = w_hh + static_cast<size_t>(2 * h + hi) * h;
+                        for (int k = 0; k < h; ++k) {
+                            gr += hs[k] * rr[k];
+                            gz += hs[k] * rz[k];
+                            gn += hs[k] * rn[k];
+                        }
+                        const float r = sigmoid(gp[hi] + gr);
+                        const float z = sigmoid(gp[h + hi] + gz);
+                        const float n = tanhf(gp[2 * h + hi] + r * gn);
+                        nh[hi] = (1.0f - z) * n + z * hs[hi];
+                    }
+                    for (int hi = 0; hi < h; ++hi) hs[hi] = nh[hi];
+                    float* op = out.data() + (static_cast<size_t>(bi) * t + ti) * out_stride + out_off;
+                    for (int hi = 0; hi < h; ++hi) op[hi] = nh[hi];
+                }
             }
         }
     }
@@ -189,6 +190,7 @@ private:
         const float* bias = get(p + ".bias");
         const int oc = size(p + ".weight") / c;
         std::vector<float> y(static_cast<size_t>(rows) * oc);
+#pragma omp parallel for schedule(static)
         for (int r = 0; r < rows; ++r) {
             for (int o = 0; o < oc; ++o) {
                 float acc = bias[o];
@@ -203,6 +205,7 @@ private:
     void layernorm(std::vector<float>& x, int rows, int cols, const std::string& p) {
         const float* w = get(p + ".weight");
         const float* bias = get(p + ".bias");
+#pragma omp parallel for schedule(static)
         for (int r = 0; r < rows; ++r) {
             float* q = x.data() + static_cast<size_t>(r) * cols;
             float mean = 0.0f, var = 0.0f;
