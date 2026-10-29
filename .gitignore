@@ -1,0 +1,11 @@
+origin/
+build/
+release/
+model_convert/configs/
+.venv/
+.tmp/
+*.log
+__pycache__/
+*.pyc
+cpp/toolchains/
+cpp/build/
