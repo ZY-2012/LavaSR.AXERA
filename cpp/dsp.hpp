@@ -297,12 +297,12 @@ inline std::vector<float> mel_features(const std::vector<float>& x, const float*
         const int off = t * kBweHop;
         for (int i = 0; i < kBweNfft; ++i) frame[i] = padded[off + i] * win[i];
         fft.forward(frame.data(), spec);
-        for (int k = 0; k < kBweBins; ++k) mag[k] = std::abs(spec[k]);
+        for (int k = 0; k < kBweBins; ++k) { const float re = spec[k].real(), im = spec[k].imag(); mag[k] = std::sqrt(re * re + im * im); }
         for (int m = 0; m < kMels; ++m) {
             const float* row = fb_t.data() + static_cast<size_t>(m) * kBweBins;
             float acc = 0.0f;
             for (int k = 0; k < kBweBins; ++k) acc += mag[k] * row[k];
-            feat[static_cast<size_t>(m) * frames + t] = std::log(std::max(acc, 1e-5f));
+            feat[static_cast<size_t>(m) * frames + t] = logf(std::max(acc, 1e-5f));
         }
     }
     return feat;

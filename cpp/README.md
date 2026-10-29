@@ -31,10 +31,10 @@ export LD_LIBRARY_PATH=/soc/lib:$LD_LIBRARY_PATH
 
 | input | denoise | time | RTF |
 |---|---:|---:|---:|
-| LibriSpeech 17.75 s | yes | 5.75 s | 0.324 |
-| LibriSpeech 17.75 s | no | 3.37 s | 0.190 |
+| LibriSpeech 17.75 s | yes | 4.22 s | 0.238 |
+| LibriSpeech 17.75 s | no | 2.52 s | 0.142 |
 
-C++ vs ONNX reference: SNR 45.9 dB (denoise) / 47.6 dB (no denoise).
+C++ vs ONNX reference: SNR 46.0 dB (denoise) / 47.6 dB (no denoise).
 
 `assets.cpp` is generated from `python/lavasr_sdk/assets`:
 
