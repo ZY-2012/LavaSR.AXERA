@@ -21,8 +21,8 @@ SNR is `10*log10(sum(ref^2)/sum((board-ref)^2))`. Cosine is on the raw waveform.
 | LibriSpeech 3.0 s | 16 kHz | no | Python | 0.9999965 | 51.65 dB |
 | noisy speech 10 s | 48 kHz | yes | Python | 0.9998354 | 34.71 dB |
 | noisy speech 10 s | 48 kHz | no | Python | 0.9999513 | 40.10 dB |
-| LibriSpeech 17.75 s | 16 kHz | yes | C++ | 0.9999858 | 45.94 dB |
-| LibriSpeech 17.75 s | 16 kHz | no | C++ | 0.9999896 | 47.62 dB |
+| LibriSpeech 17.75 s | 16 kHz | yes | C++ | 0.9999859 | 46.00 dB |
+| LibriSpeech 17.75 s | 16 kHz | no | C++ | 0.9999896 | 47.56 dB |
 
 The C++ and Python SDKs use the same models; differences are only host FFT /
 resampler rounding.

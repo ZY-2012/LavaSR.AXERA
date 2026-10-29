@@ -42,13 +42,21 @@ embedded assets:
 
 | input | duration | denoise | time | RTF |
 |---|---:|---|---:|---:|
-| LibriSpeech 16 kHz | 17.75 s | yes | 5.75 s | **0.324** |
-| LibriSpeech 16 kHz | 17.75 s | no | 3.37 s | **0.190** |
+| LibriSpeech 16 kHz | 17.75 s | yes | 4.22 s | **0.238** |
+| LibriSpeech 16 kHz | 17.75 s | no | 2.52 s | **0.142** |
 
-C++ host breakdown: denoiser 2.09 s, BWE 2.27 s, LR merge 1.11 s, resampling
-0.06 s. The Python/numpy SDK is faster on this board for the mel/iSTFT stage
-(BLAS/vectorized ops); the C++ SDK is self-contained and has no Python/numpy
-runtime dependency.
+C++ host breakdown: denoiser 1.72 s, BWE 1.43 s, LR merge 1.04 s, resampling
+0.04 s. After replacing scalar `std::exp/cos/sin/abs` with the float intrinsics,
+using KissFFT for the BWE mel/iSTFT/LR merge and adding `-O3 -ffast-math`, the
+C++ SDK is now faster than the Python/numpy SDK on this board.
+
+### 为什么最初的 C++ 反而比 Python 慢？
+
+NPU 部分两者完全相同且只占 ~0.24 s；RTF 由主机 DSP 决定。最初的 C++ 实现是
+逐标量循环：`std::exp/cos/sin/abs` 经常走 double 版本、mel 矩阵乘没有 BLAS、
+FFT 使用未优化的 radix-2；而 Python/numpy 的 pocketfft 和 BLAS 都是高度优化
+的 C/Fortran 实现。因此“C++ 语言更快”并不自动成立。做完上述优化后 C++ 才
+真正快于 Python。
 
 ## Runtime requirements
 

@@ -26,13 +26,37 @@ LavaSR 是一个轻量语音超分 / 带宽扩展模型：输入 8–48 kHz 低�
 |---|---:|---:|
 | Python：降噪 + BWE | 4.93 s | **0.278** |
 | Python：仅 BWE | 1.82 s | **0.103** |
-| C++：降噪 + BWE | 5.75 s | 0.324 |
-| C++：仅 BWE | 3.37 s | 0.190 |
+| C++：降噪 + BWE | 4.22 s | **0.238** |
+| C++：仅 BWE | 2.52 s | **0.142** |
 
 板端 Python SDK vs ONNX 参考：**cosine 0.99999，SNR 45.9 dB**（17.75 s
 LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39.6 dB**。
 细节见 [`reports/accuracy.md`](reports/accuracy.md) 和
 [`reports/performance.md`](reports/performance.md)。
+
+## 试听：超分前后对比
+
+以下音频均在 AX650 板端用本仓库模型生成（Python SDK）。
+
+**1. 干净 16 kHz -> 48 kHz（仅 BWE）**
+
+| 超分前（16 kHz 升采样到 48 kHz） | LavaSR 超分后（48 kHz） |
+|---|---|
+| <audio controls src="samples/demo_clean_before_48k.wav"></audio> | <audio controls src="samples/demo_clean_after_48k.wav"></audio> |
+| [▶ 播放/下载 before](samples/demo_clean_before_48k.wav) | [▶ 播放/下载 after](samples/demo_clean_after_48k.wav) |
+
+8–24 kHz 高频能量占比：**-44.8 dB -> -33.4 dB（+11.4 dB）**。
+
+**2. 带噪 16 kHz -> 降噪 + 48 kHz（denoise + BWE）**
+
+| 超分前（10 dB SNR 噪声） | LavaSR 降噪+超分后 |
+|---|---|
+| <audio controls src="samples/demo_noisy_before_48k.wav"></audio> | <audio controls src="samples/demo_noisy_after_48k.wav"></audio> |
+| [▶ 播放/下载 before](samples/demo_noisy_before_48k.wav) | [▶ 播放/下载 after](samples/demo_noisy_after_48k.wav) |
+
+低带（<8 kHz）相对干净参考的 SNR：**10.4 dB -> 18.4 dB（+8.0 dB）**。
+
+原始 16 kHz 输入：`samples/demo_clean_16k.wav`、`samples/demo_noisy_16k.wav`。
 
 ## 架构
 

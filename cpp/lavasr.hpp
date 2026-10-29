@@ -138,10 +138,10 @@ private:
         std::vector<std::complex<float>> spec(static_cast<size_t>(kBweFrames) * kBweBins);
         for (int t = 0; t < kBweFrames; ++t) {
             for (int k = 0; k < kBweBins; ++k) {
-                const float m = std::exp(std::min(head[static_cast<size_t>(k) * kBweFrames + t], 1e3f));
+                const float m = expf(std::min(head[static_cast<size_t>(k) * kBweFrames + t], 1e3f));
                 const float p = head[static_cast<size_t>(kBweBins + k) * kBweFrames + t];
                 spec[static_cast<size_t>(t) * kBweBins + k] =
-                    std::complex<float>(m * std::cos(p), m * std::sin(p));
+                    std::complex<float>(m * cosf(p), m * sinf(p));
             }
         }
         return bwe_istft(spec, std::vector<float>(kMelWindow, kMelWindow + kBweWin));

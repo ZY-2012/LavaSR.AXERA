@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden -g -O0")
 else()
-    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -O3 -fdata-sections -ffunction-sections")
+    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -O3 -ffast-math -funroll-loops -fdata-sections -ffunction-sections")
 endif()
 
 if(AX650)
