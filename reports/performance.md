@@ -48,7 +48,10 @@ embedded assets:
 C++ host breakdown: denoiser 1.72 s, BWE 1.43 s, LR merge 1.04 s, resampling
 0.04 s. After replacing scalar `std::exp/cos/sin/abs` with the float intrinsics,
 using KissFFT for the BWE mel/iSTFT/LR merge and adding `-O3 -ffast-math`, the
-C++ SDK is now faster than the Python/numpy SDK on this board.
+C++ full pipeline (denoise + BWE) is now faster than Python (0.238 vs 0.278).
+For **BWE-only** Python remains faster (0.103 vs 0.142): numpy's BLAS/pocketfft
+mel + iSTFT path is extremely well optimized, while the C++ mel matmul is still
+a scalar loop.
 
 ### 为什么最初的 C++ 反而比 Python 慢？
 
