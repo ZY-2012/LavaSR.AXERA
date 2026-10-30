@@ -39,25 +39,25 @@ bash run_ax650.sh samples/listen/8k/OSR_us_000_0010_input_8k.wav output.wav --py
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0010_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0010_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0010_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0010_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_output_48k_spec.png" width="360"> |
 
 **OSR_us_000_0013**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0013_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0013_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0013_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0013_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0013_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0013_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0013_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0013_output_48k_spec.png" width="360"> |
 
 **OSR_us_000_0057**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0057_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0057_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0057_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0057_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0057_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0057_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0057_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0057_output_48k_spec.png" width="360"> |
 
 **OSR_us_000_0059**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0059_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0059_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0059_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0059_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0059_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0059_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_us_000_0059_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0059_output_48k_spec.png" width="360"> |
 
 #### Chinese
 
@@ -65,25 +65,25 @@ bash run_ax650.sh samples/listen/8k/OSR_us_000_0010_input_8k.wav output.wav --py
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0072_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0072_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0072_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0072_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_output_48k_spec.png" width="360"> |
 
 **OSR_cn_000_0073**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0073_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0073_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0073_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0073_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0073_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0073_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0073_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0073_output_48k_spec.png" width="360"> |
 
 **OSR_cn_000_0074**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0074_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0074_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0074_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0074_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0074_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0074_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0074_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0074_output_48k_spec.png" width="360"> |
 
 **OSR_cn_000_0075**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0075_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0075_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0075_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0075_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0075_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0075_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/OSR_cn_000_0075_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0075_output_48k_spec.png" width="360"> |
 
 #### Samplelib（1 分钟，频谱图为前 10 s）
 
@@ -91,7 +91,7 @@ bash run_ax650.sh samples/listen/8k/OSR_us_000_0010_input_8k.wav output.wav --py
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/samplelib_speech_1m_input_8k.wav)<br><img src="samples/listen/spectrograms/samplelib_speech_1m_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/samplelib_speech_1m_output_48k.wav)<br><img src="samples/listen/spectrograms/samplelib_speech_1m_output_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/samplelib_speech_1m_input_8k.wav)<br><img src="samples/listen/spectrograms/samplelib_speech_1m_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/samplelib_speech_1m_output_48k.wav)<br><img src="samples/listen/spectrograms/samplelib_speech_1m_output_48k_spec.png" width="360"> |
 
 ### 16 kHz 参照（人声）
 
@@ -101,15 +101,15 @@ bash run_ax650.sh samples/listen/8k/OSR_us_000_0010_input_8k.wav output.wav --py
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/speech_2_input_8k.wav)<br><img src="samples/listen/spectrograms/speech_2_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/speech_2_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_output_8k_48k_spec.png" width="300"> |
-| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_2_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_2_input_16k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from16k/speech_2_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_output_16k_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/speech_2_input_8k.wav)<br><img src="samples/listen/spectrograms/speech_2_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/speech_2_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_output_8k_48k_spec.png" width="360"> |
+| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_2_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_2_input_16k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from16k/speech_2_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_output_16k_48k_spec.png" width="360"> |
 
 **speech_3**
 
 | 版本 | 输入 | LavaSR 输出 |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/speech_3_input_8k.wav)<br><img src="samples/listen/spectrograms/speech_3_input_8k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/speech_3_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_3_output_8k_48k_spec.png" width="300"> |
-| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_3_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_3_input_16k_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from16k/speech_3_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_3_output_16k_48k_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/speech_3_input_8k.wav)<br><img src="samples/listen/spectrograms/speech_3_input_8k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from8k/speech_3_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_3_output_8k_48k_spec.png" width="360"> |
+| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_3_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_3_input_16k_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_from16k/speech_3_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_3_output_16k_48k_spec.png" width="360"> |
 
 ### 带噪输入（降噪 + BWE）
 
@@ -117,19 +117,19 @@ bash run_ax650.sh samples/listen/8k/OSR_us_000_0010_input_8k.wav output.wav --py
 
 | 版本 | 带噪输入 | LavaSR 输出（降噪 + BWE） |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0010_noisy_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_noisy_input_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/OSR_us_000_0010_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_noisy_output_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_us_000_0010_noisy_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_noisy_input_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/OSR_us_000_0010_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_us_000_0010_noisy_output_spec.png" width="360"> |
 
 **OSR_cn_000_0072 + 10 dB noise**
 
 | 版本 | 带噪输入 | LavaSR 输出（降噪 + BWE） |
 |---|---|---|
-| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0072_noisy_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_noisy_input_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/OSR_cn_000_0072_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_noisy_output_spec.png" width="300"> |
+| 8k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/8k/OSR_cn_000_0072_noisy_input_8k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_noisy_input_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/OSR_cn_000_0072_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/OSR_cn_000_0072_noisy_output_spec.png" width="360"> |
 
 **speech_2 + 10 dB noise**
 
 | 版本 | 带噪输入 | LavaSR 输出（降噪 + BWE） |
 |---|---|---|
-| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_2_noisy_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_2_noisy_input_spec.png" width="300"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/speech_2_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_noisy_output_spec.png" width="300"> |
+| 16k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/16k/speech_2_noisy_input_16k.wav)<br><img src="samples/listen/spectrograms/speech_2_noisy_input_spec.png" width="360"> | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/listen/48k_noisy/speech_2_noisy_output_48k.wav)<br><img src="samples/listen/spectrograms/speech_2_noisy_output_spec.png" width="360"> |
 
 ## 推理速度：RTF
 
