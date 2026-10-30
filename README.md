@@ -42,7 +42,7 @@ LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39
 
 | 超分前（16 kHz 升采样到 48 kHz） | LavaSR 超分后（48 kHz） |
 |---|---|
-| [▶ 在线试听 before](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_before_48k.wav) · [下载 wav](samples/demo_clean_before_48k.wav) | [▶ 在线试听 after](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_after_48k.wav) · [下载 wav](samples/demo_clean_after_48k.wav) |
+| [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_before_48k.wav) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_clean_after_48k.wav) |
 
 8–24 kHz 高频能量占比：**-44.8 dB -> -33.4 dB（+11.4 dB）**。
 
@@ -50,63 +50,139 @@ LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39
 
 | 超分前（10 dB SNR 噪声） | LavaSR 降噪+超分后 |
 |---|---|
-| [▶ 在线试听 before](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_before_48k.wav) · [下载 wav](samples/demo_noisy_before_48k.wav) | [▶ 在线试听 after](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_after_48k.wav) · [下载 wav](samples/demo_noisy_after_48k.wav) |
+| [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_before_48k.wav) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/demo_noisy_after_48k.wav) |
 
 低带（<8 kHz）相对干净参考的 SNR：**10.4 dB -> 18.4 dB（+8.0 dB）**。
 
 原始 16 kHz 输入：`samples/demo_clean_16k.wav`、`samples/demo_noisy_16k.wav`。
 
-> 若 GitHub 未渲染播放器，点击“在线试听”会打开 HuggingFace 上的音频（inline 播放）；“下载 wav”为仓库内文件。
+> GitHub 不支持内嵌 `<audio>` 播放器，点击 ▶ 会在浏览器中打开 HuggingFace 的 inline 音频；HuggingFace 页面使用原生播放器。
 
 ### 与 AudioSR 的 8 kHz 横向对比
 
-AudioSR 官方 demo 的 8 kHz / AudioSR / Ground-Truth 音频来自 [audioldm.github.io/audiosr](https://audioldm.github.io/audiosr/)；LavaSR 使用同一 8 kHz 输入（BWE only，`denoise=False`）在 AX650 板端生成。官方 `_up` 文件是 8 kHz 内容升采样到 48 kHz，这里先还原为 8 kHz 再输入模型。
+AudioSR 官方 demo 的 8 kHz / AudioSR / Ground-Truth 音频来自 [audioldm.github.io/audiosr](https://audioldm.github.io/audiosr/)；LavaSR 使用同一 8 kHz 输入（BWE only，`denoise=False`）在 AX650 板端生成；`LavaSR (PyTorch FP32)` 为原始 PyTorch 权重、同一 48 kHz BWE 输入的推理结果。官方 `_up` 文件是 8 kHz 内容升采样到 48 kHz，这里先还原为 8 kHz 再输入模型。
 
 LSD 采用 AudioSR 仓库的评测口径：22.05 kHz、N_FFT 2048 / hop 512、按 Ground-Truth 低频 10% 能量对齐（见 `example/lsd_calculation_pitfall`），越低越好。
 
-| 样本 | 8 kHz 输入 | AudioSR | LavaSR v2 | Ground-Truth |
-|---|---|---|---|---|
-| speech_2 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_gt.wav) |
-| speech_3 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_gt.wav) |
-| event_1 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_gt.wav) |
-| event_2 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_gt.wav) |
-| event_3 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_gt.wav) |
-| music_1 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_gt.wav) |
-| music_2 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_gt.wav) |
-| music_3 | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_input_8k.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_audiosr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_lavasr.wav) | [▶ 播放](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_gt.wav) |
+#### Speech
+
+**speech_2**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_gt.wav) |
+
+**speech_3**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_gt.wav) |
+
+#### Event
+
+**event_1**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_gt.wav) |
+
+**event_2**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_gt.wav) |
+
+**event_3**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_gt.wav) |
+
+#### Music
+
+**music_1**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_gt.wav) |
+
+**music_2**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_gt.wav) |
+
+**music_3**
+
+| 版本 | 试听 |
+|---|---|
+| 8 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_input_8k.wav) |
+| AudioSR | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_audiosr.wav) |
+| LavaSR (PyTorch FP32) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_lavasr_fp32.wav) |
+| LavaSR (AX650) | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_lavasr.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_gt.wav) |
 
 > 说明：官方 `speech_audiosr_4.wav` 与对应 Ground-Truth 内容不匹配（互相关≈0），因此语音类只保留 2 个可用样本。
 
-| 类别 | 样本数 | AudioSR LSD | LavaSR LSD |
-|---|---:|---:|---:|
-| speech | 2 | 1.25 | 1.94 |
-| event | 3 | 1.41 | 1.43 |
-| music | 3 | 0.75 | 1.25 |
-| **合计** | **8** | **1.12** | **1.49** |
+| 类别 | 样本数 | AudioSR LSD | LavaSR FP32 LSD | LavaSR AX650 LSD |
+|---|---:|---:|---:|---:|
+| speech | 2 | 1.25 | 1.94 | 1.94 |
+| event | 3 | 1.41 | 1.44 | 1.43 |
+| music | 3 | 0.75 | 1.25 | 1.25 |
+| **合计** | **8** | **1.12** | **1.50** | **1.49** |
 
 <details>
 <summary>逐样本 LSD（AudioSR 口径）</summary>
 
-| 样本 | AudioSR | LavaSR |
-|---|---:|---:|
-| speech_2 | 0.809 | 2.085 |
-| speech_3 | 1.693 | 1.796 |
-| event_1 | 0.772 | 1.161 |
-| event_2 | 1.051 | 1.971 |
-| event_3 | 2.396 | 1.159 |
-| music_1 | 0.663 | 1.199 |
-| music_2 | 0.842 | 1.385 |
-| music_3 | 0.733 | 1.162 |
+| 样本 | AudioSR | LavaSR FP32 | LavaSR AX650 |
+|---|---:|---:|---:|
+| speech_2 | 0.809 | 2.093 | 2.085 |
+| speech_3 | 1.693 | 1.796 | 1.796 |
+| event_1 | 0.772 | 1.173 | 1.161 |
+| event_2 | 1.051 | 1.981 | 1.971 |
+| event_3 | 2.396 | 1.158 | 1.159 |
+| music_1 | 0.663 | 1.200 | 1.199 |
+| music_2 | 0.842 | 1.394 | 1.385 |
+| music_3 | 0.733 | 1.169 | 1.162 |
 
 </details>
 
 **和论文数值为什么不同？**
 
 - 论文的 0.85 / 0.72 / 0.63 是 **VCTK 验证集** 上 8/16/24 kHz 输入的结果；这里是 AudioSR 官方 demo 的 8k 样本，混合 speech/event/music，输入本身更难：8k 输入直接升采样到 48k 的 LSD 为 3.5–5.5，而 VCTK 的 sinc baseline 约 2.98。
-- 在同一批样本上，AudioSR 平均 LSD 1.12 与论文 AudioSR 1.13 基本一致，说明评测口径一致；LavaSR 1.49 在这批 8k 通用音频上弱于 AudioSR，差距约 **+0.37 log10 LSD（约 33%）**。
+- 在同一批样本上，AudioSR 平均 LSD 1.12 与论文 AudioSR 1.13 基本一致；LavaSR 1.49 在这批 8k 通用音频上弱于 AudioSR，差距约 **+0.37 log10 LSD（约 33%）**。
+- 原始 PyTorch FP32 与 AX650 对 GT 的 LSD 几乎相同（1.50 vs 1.49），说明 **8k 差距不是量化或部署造成的**；FP32 也一样，主要是模型训练域和 8k demo 输入本身更难。
 - 分类差距：语音 1.25 vs 1.94（+0.69 / 约 55%）；事件 1.41 vs 1.43（基本持平）；音乐 0.75 vs 1.25（+0.50 / 约 67%）。
-- 作为参照，同一批 Ground-Truth 降到 16 kHz 后输入 LavaSR（16k→48k），LSD 为 **0.66–1.48（平均 0.83）**；其中 speech_2 为 **0.73**，与论文 16k 的 0.72 一致。说明模型/推理链路正常，8k 差距主要来自 8k 输入和通用音频域。
-- LavaSR v2 的主场景仍是 **16 kHz 语音**：模型总量 38 MB，C++ RTF 0.061。
+- 作为参照，同一批 Ground-Truth 降到 **16 kHz** 后输入 LavaSR（16k→48k），LSD 为 **0.66–1.48（平均 0.83）**；其中 speech_2 为 **0.73**、event_1 为 0.66、music_1 为 0.81，与论文 16k 的 0.72 一致。这里说的“好”指的就是这些 **16 kHz 输入**，不是 8k 的 speech_2/3。
+- LavaSR v2 支持 8–48 kHz 输入，但论文的质量优势主要建立在 **16 kHz 语音**；8k 通用音频上 AudioSR 更强。
 
 ## 架构
 
