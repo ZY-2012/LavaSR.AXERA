@@ -4,6 +4,9 @@
 #include <cmath>
 #include <complex>
 #include <cstdint>
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <numeric>
@@ -444,26 +447,57 @@ inline int next_pow2(int n) {
     return m;
 }
 
+inline int merge_fft_len(int n) {
+    const int target = n + 16384;
+    int best = next_pow2(target);
+    for (int p2 = 1; p2 <= best; p2 *= 2) {
+        for (int p3 = p2; p3 <= best; p3 *= 3) {
+            for (int p5 = p3; p5 <= best; p5 *= 5) {
+                if (p5 >= target && p5 < best) best = p5;
+            }
+        }
+    }
+    return best;
+}
+
 
 inline std::vector<float> lr_merge(const std::vector<float>& gen,
                                    const std::vector<float>& orig,
                                    float cutoff, int transition = 1024, int sr = 48000) {
+    const bool prof = std::getenv("LAVASR_PROFILE") != nullptr;
+    auto tick = [] { return std::chrono::steady_clock::now(); };
+    auto ms = [](auto a, auto bb) { return std::chrono::duration<double, std::milli>(bb - a).count(); };
+    auto t0 = tick();
     const int n = static_cast<int>(gen.size());
-    const int m = next_pow2(n + 16384);
+    const int m = merge_fft_len(n);
     const int tb = std::max(2, static_cast<int>(std::lround(transition * static_cast<double>(m) / n)) / 2 * 2);
     const auto mask = lr_mask(m / 2 + 1, cutoff, tb, sr);
     std::vector<float> a(m, 0.0f), b(m, 0.0f);
     std::copy(gen.begin(), gen.end(), a.begin());
     std::copy(orig.begin(), orig.end(), b.begin());
-    static std::map<int, RealFFT*> plans;
+    auto t1 = tick();
+    static std::map<int, std::pair<RealFFT*, RealFFT*>> plans;
     auto it = plans.find(m);
-    if (it == plans.end()) it = plans.emplace(m, new RealFFT(m)).first;
+    if (it == plans.end()) {
+        it = plans.emplace(m, std::make_pair(new RealFFT(m), new RealFFT(m))).first;
+    }
     std::vector<std::complex<float>> sa, sb;
-    it->second->forward(a.data(), sa);
-    it->second->forward(b.data(), sb);
+#pragma omp parallel sections
+    {
+#pragma omp section
+        it->second.first->forward(a.data(), sa);
+#pragma omp section
+        it->second.second->forward(b.data(), sb);
+    }
+    auto t2 = tick();
     std::vector<std::complex<float>> merged(sa.size());
+#pragma omp parallel for schedule(static)
     for (size_t i = 0; i < sa.size(); ++i) merged[i] = sb[i] + (sa[i] - sb[i]) * mask[i];
-    const auto y = it->second->inverse(merged);
+    auto t3 = tick();
+    const auto y = it->second.first->inverse(merged);
+    auto t4 = tick();
+    if (prof) std::fprintf(stderr, "merge: m=%d mask %.0f fwd %.0f mix %.0f inv %.0f\n",
+                           m, ms(t0,t1), ms(t1,t2), ms(t2,t3), ms(t3,t4));
     return std::vector<float>(y.begin(), y.begin() + n);
 }
 
