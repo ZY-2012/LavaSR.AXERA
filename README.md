@@ -1,6 +1,10 @@
 # LavaSR.AXERA
 
-[LavaSR v2](https://github.com/ysharma3501/LavaSR) 的 AX650（NPU3）量化与板端部署工程。输入 8–48 kHz 语音，输出 48 kHz；提供 3 个 axmodel、Python/C++ SDK 和预编译可执行文件。
+**AX650 上的 8–48 kHz → 48 kHz 语音超分 + 降噪。C++ 全链路 RTF 0.061（约 16x realtime），仅 BWE RTF 0.039（约 25x realtime）；3 个 axmodel 共 38 MB，Python/C++ SDK 即取即用。**
+
+![AX650](https://img.shields.io/badge/AX650-NPU3-2ea44f) ![RTF](https://img.shields.io/badge/RTF-0.061%20full%20%7C%200.039%20BWE-brightgreen) ![Size](https://img.shields.io/badge/axmodel-38%20MB-green) ![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![C%2B%2B](https://img.shields.io/badge/C%2B%2B-17-blue) [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE) [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97-LavaSR.AXERA-yellow)](https://huggingface.co/HY-2012/LavaSR.AXERA)
+
+**Tags:** `AX650` `NPU3` `Speech Super-Resolution` `Bandwidth Extension` `Speech Denoising` `Real-time` `Python` `C++`
 
 - HuggingFace: https://huggingface.co/HY-2012/LavaSR.AXERA
 - GitHub: https://github.com/ZY-2012/LavaSR.AXERA
