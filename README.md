@@ -60,6 +60,48 @@ LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39
 
 > 若 GitHub 未渲染播放器，点击“在线试听”会打开 HuggingFace 上的音频（inline 播放）；“下载 wav”为仓库内文件。
 
+### 与 AudioSR 的 8 kHz 横向对比
+
+AudioSR 官方 demo 的 8 kHz / AudioSR / Ground-Truth 音频来自 [audioldm.github.io/audiosr](https://audioldm.github.io/audiosr/)；LavaSR 使用同一 8 kHz 输入（BWE only，`denoise=False`）在 AX650 板端生成。官方 `_up` 文件是 8 kHz 内容升采样到 48 kHz，这里先还原为 8 kHz 再输入模型。LSD 为等 RMS 归一化后的 log-spectral distance（dB，越低越好）。
+
+| 样本 | 8 kHz 输入 | AudioSR | LavaSR v2 | Ground-Truth |
+|---|---|---|---|---|
+| speech_2 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_gt.wav"></audio> |
+| speech_3 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_gt.wav"></audio> |
+| event_1 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_gt.wav"></audio> |
+| event_2 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_gt.wav"></audio> |
+| event_3 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_gt.wav"></audio> |
+| music_1 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_gt.wav"></audio> |
+| music_2 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_gt.wav"></audio> |
+| music_3 | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_input_8k.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_audiosr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_lavasr.wav"></audio> | <audio controls src="https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_gt.wav"></audio> |
+
+> 说明：官方 `speech_audiosr_4.wav` 与对应 Ground-Truth 内容不匹配（互相关≈0），因此语音类只保留 2 个可用样本。
+
+| 类别 | 样本数 | AudioSR LSD | LavaSR LSD |
+|---|---:|---:|---:|
+| speech | 2 | 19.2 dB | 31.5 dB |
+| event | 3 | 20.3 dB | 26.7 dB |
+| music | 3 | 12.7 dB | 19.0 dB |
+| **合计** | **8** | **17.2 dB** | **25.0 dB** |
+
+<details>
+<summary>逐样本 LSD (dB)</summary>
+
+| 样本 | AudioSR | LavaSR |
+|---|---:|---:|
+| speech_2 | 17.21 | 26.11 |
+| speech_3 | 21.10 | 36.83 |
+| event_1 | 22.30 | 29.84 |
+| event_2 | 16.56 | 27.06 |
+| event_3 | 21.97 | 23.20 |
+| music_1 | 10.36 | 19.67 |
+| music_2 | 17.19 | 19.47 |
+| music_3 | 10.50 | 17.87 |
+
+</details>
+
+> **结论**：AudioSR 是通用 8 kHz 超分模型，在这批音乐/事件/8k 语音样本上更强；LavaSR v2 的训练域是 16 kHz 语音，16 kHz 样例见上方，在 16 kHz 语音上 LavaSR 更轻、更快（C++ RTF 0.061）。
+
 ## 架构
 
 ```text
