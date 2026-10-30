@@ -184,6 +184,82 @@ LSD 采用 AudioSR 仓库的评测口径：22.05 kHz、N_FFT 2048 / hop 512、�
 - 作为参照，同一批 Ground-Truth 降到 **16 kHz** 后输入 LavaSR（16k→48k），LSD 为 **0.66–1.48（平均 0.83）**；其中 speech_2 为 **0.73**、event_1 为 0.66、music_1 为 0.81，与论文 16k 的 0.72 一致。这里说的“好”指的就是这些 **16 kHz 输入**，不是 8k 的 speech_2/3。
 - LavaSR v2 支持 8–48 kHz 输入，但论文的质量优势主要建立在 **16 kHz 语音**；8k 通用音频上 AudioSR 更强。
 
+#### 16 kHz 参照（同一批 Ground-Truth 降到 16 kHz 后输入 LavaSR）
+
+上面的 8k 对比说明 LavaSR 在 8k 通用音频上不如 AudioSR；为了说明“16k 好”具体指哪些音频，这里把同一批 Ground-Truth 先降到 **16 kHz**，再输入 LavaSR（BWE only，`denoise=False`，cutoff=8 kHz）生成 48 kHz。没有 AudioSR 的 16k 输出，因此这里只与 Ground-Truth 对比；LSD 使用同一 AudioSR 口径（越低越好）。
+
+##### Speech
+
+**speech_2（LSD 0.74）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_2_gt.wav) |
+
+**speech_3（LSD 1.49）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/speech_3_gt.wav) |
+
+##### Event
+
+**event_1（LSD 0.66）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_1_gt.wav) |
+
+**event_2（LSD 0.73）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_2_gt.wav) |
+
+**event_3（LSD 0.72）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/event_3_gt.wav) |
+
+##### Music
+
+**music_1（LSD 0.81）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_1_gt.wav) |
+
+**music_2（LSD 0.83）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_2_gt.wav) |
+
+**music_3（LSD 0.66）**
+
+| 版本 | 试听 |
+|---|---|
+| 16 kHz 输入 | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_input_16k.wav) |
+| LavaSR 16k→48k | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_lavasr16k.wav) |
+| Ground-Truth | [▶](https://huggingface.co/HY-2012/LavaSR.AXERA/resolve/main/samples/audiosr/music_3_gt.wav) |
+
+> 文件也在 `samples/audiosr/`：`*_input_16k.wav`、`*_lavasr16k.wav`、`*_gt.wav`。
+
 ## 架构
 
 ```text
