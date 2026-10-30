@@ -26,8 +26,8 @@ LavaSR 是一个轻量语音超分 / 带宽扩展模型：输入 8–48 kHz 低�
 |---|---:|---:|
 | Python：降噪 + BWE | 4.93 s | **0.278** |
 | Python：仅 BWE | 1.82 s | **0.103** |
-| C++：降噪 + BWE | 2.51 s | **0.141** |
-| C++：仅 BWE | 1.89 s | **0.106** |
+| C++：降噪 + BWE | 1.08 s | **0.061** |
+| C++：仅 BWE | 0.70 s | **0.039** |
 
 板端 Python SDK vs ONNX 参考：**cosine 0.99999，SNR 45.9 dB**（17.75 s
 LibriSpeech）；ONNX 主机链路 vs 原始 PyTorch：**cosine 0.99995，SNR 39.6 dB**。

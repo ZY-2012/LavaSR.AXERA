@@ -50,8 +50,16 @@ public:
         f.seekg(0, std::ios::beg);
         data_.resize(n);
         f.read(data_.data(), static_cast<std::streamsize>(n));
-        if (AX_ENGINE_CreateHandle(&handle_, data_.data(), static_cast<AX_U32>(n)) != 0 || !handle_) {
-            std::fprintf(stderr, "AX_ENGINE_CreateHandle failed: %s\n", path.c_str());
+        AX_ENGINE_HANDLE_EXTRA_T extra;
+        std::memset(&extra, 0, sizeof(extra));
+        char name[] = "lavasr";
+        extra.pName = reinterpret_cast<AX_S8*>(name);
+        if (AX_ENGINE_CreateHandleV2(&handle_, data_.data(), static_cast<AX_U32>(n), &extra) != 0 || !handle_) {
+            std::fprintf(stderr, "AX_ENGINE_CreateHandleV2 failed: %s\n", path.c_str());
+            return false;
+        }
+        if (AX_ENGINE_CreateContextV2(handle_, &context_) != 0 || !context_) {
+            std::fprintf(stderr, "AX_ENGINE_CreateContextV2 failed: %s\n", path.c_str());
             return false;
         }
         if (AX_ENGINE_GetIOInfo(handle_, &info_) != 0 || !info_) {
@@ -69,8 +77,8 @@ public:
         for (AX_U32 i = 0; i < info_->nInputSize; ++i) {
             auto& b = io_->pInputs[i];
             b.nSize = info_->pInputs[i].nSize;
-            if (AX_SYS_MemAlloc(reinterpret_cast<AX_U64*>(&b.phyAddr), &b.pVirAddr, b.nSize,
-                                128, reinterpret_cast<const AX_S8*>("lavasr")) != 0)
+            if (AX_SYS_MemAllocCached(reinterpret_cast<AX_U64*>(&b.phyAddr), &b.pVirAddr, b.nSize,
+                                      128, reinterpret_cast<const AX_S8*>("lavasr")) != 0)
                 return false;
             std::memset(b.pVirAddr, 0, b.nSize);
             in_index_[info_->pInputs[i].pName] = static_cast<int>(i);
@@ -78,8 +86,8 @@ public:
         for (AX_U32 i = 0; i < info_->nOutputSize; ++i) {
             auto& b = io_->pOutputs[i];
             b.nSize = info_->pOutputs[i].nSize;
-            if (AX_SYS_MemAlloc(reinterpret_cast<AX_U64*>(&b.phyAddr), &b.pVirAddr, b.nSize,
-                                128, reinterpret_cast<const AX_S8*>("lavasr")) != 0)
+            if (AX_SYS_MemAllocCached(reinterpret_cast<AX_U64*>(&b.phyAddr), &b.pVirAddr, b.nSize,
+                                      128, reinterpret_cast<const AX_S8*>("lavasr")) != 0)
                 return false;
             out_index_[info_->pOutputs[i].pName] = static_cast<int>(i);
         }
@@ -104,7 +112,7 @@ public:
     }
 
     bool run() {
-        if (AX_ENGINE_RunSync(handle_, io_) != 0) return false;
+        if (AX_ENGINE_RunSyncV2(handle_, context_, io_) != 0) return false;
         for (AX_U32 i = 0; i < info_->nOutputSize; ++i) {
             auto& b = io_->pOutputs[i];
             AX_SYS_MinvalidateCache(b.phyAddr, b.pVirAddr, b.nSize);
@@ -150,6 +158,7 @@ private:
     }
 
     void* handle_ = nullptr;
+    void* context_ = nullptr;
     AX_ENGINE_IO_INFO_T* info_ = nullptr;
     AX_ENGINE_IO_T* io_ = nullptr;
     std::vector<char> data_;

@@ -136,12 +136,14 @@ private:
         std::vector<float> head;
         if (!enh_.get_output("head_out", head, 1 * (2 * kBweBins) * kBweFrames)) return {};
         std::vector<std::complex<float>> spec(static_cast<size_t>(kBweFrames) * kBweBins);
+#pragma omp parallel for schedule(static)
         for (int t = 0; t < kBweFrames; ++t) {
             for (int k = 0; k < kBweBins; ++k) {
                 const float m = expf(std::min(head[static_cast<size_t>(k) * kBweFrames + t], 1e3f));
                 const float p = head[static_cast<size_t>(kBweBins + k) * kBweFrames + t];
-                spec[static_cast<size_t>(t) * kBweBins + k] =
-                    std::complex<float>(m * cosf(p), m * sinf(p));
+                float sn, cs;
+                __builtin_sincosf(p, &sn, &cs);
+                spec[static_cast<size_t>(t) * kBweBins + k] = std::complex<float>(m * cs, m * sn);
             }
         }
         return bwe_istft(spec, std::vector<float>(kMelWindow, kMelWindow + kBweWin));

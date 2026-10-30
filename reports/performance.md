@@ -42,12 +42,12 @@ embedded assets:
 
 | input | duration | denoise | time | RTF |
 |---|---:|---|---:|---:|
-| LibriSpeech 16 kHz | 17.75 s | yes | 2.51 s | **0.141** |
-| LibriSpeech 16 kHz | 17.75 s | no | 1.89 s | **0.106** |
+| LibriSpeech 16 kHz | 17.75 s | yes | 1.08 s | **0.061** |
+| LibriSpeech 16 kHz | 17.75 s | no | 0.70 s | **0.039** |
 
-C++ host breakdown (8 threads): denoiser 0.61 s, BWE mel/iSTFT 0.81 s, LR merge
-1.02 s, resampling 0.04 s. The remaining dominant stage is the full-length LR
-merge FFT.
+C++ host breakdown (8 threads, warmed up): denoiser 0.39 s, BWE mel/iSTFT
+0.31 s, LR merge 0.35 s, resampling 0.04 s. The full-length LR merge FFT is now
+the largest single stage.
 
 ### 为什么最初的 C++ 反而比 Python 慢？
 
@@ -60,10 +60,14 @@ FFT 使用未优化的 radix-2；而 Python/numpy 的 pocketfft 和 BLAS 都是�
 1. `expf/cosf/sinf/logf` + 直接复数模 + `-O3 -ffast-math`；
 2. KissFFT 替换 mel/iSTFT/LR merge 的 radix-2；
 3. mel 滤波器转置，改善 cache；
-4. OpenMP 并行：mel/iSTFT/STFT/ERB/DPGRNN 按帧或 batch 分工（Cortex-A55 8 核）。
+4. OpenMP 并行：mel/iSTFT/STFT/ERB/spec/DPGRNN 按帧或 batch 分工
+   （Cortex-A55 8 核），并加 `-mcpu=cortex-a55`。
+5. AX Engine I/O 改为 `AX_SYS_MemAllocCached` + `CreateHandleV2/RunSyncV2`；
+6. LR merge 使用 5-smooth FFT 长度 874800（而非 1M power-of-two），两个
+   forward FFT 并行，mask/mix 并行。
 
-优化后 C++ 全链路 RTF 0.141，快于 Python 0.278；仅 BWE 时 C++ 0.106 与
-Python 0.103 基本持平。
+优化后 C++ 全链路 RTF **0.061**，约为 Python 0.278 的 4.6 倍速；仅 BWE
+RTF **0.039**，约为 Python 0.103 的 2.6 倍速。精度与优化前完全一致。
 
 ### 为什么最初的 C++ 反而比 Python 慢？
 
