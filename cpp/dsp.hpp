@@ -10,6 +10,7 @@
 #include <cstring>
 #include <map>
 #include <numeric>
+#include <stdexcept>
 #include <vector>
 
 #include "third_party/kissfft/kiss_fftr.h"
@@ -131,6 +132,7 @@ public:
     explicit RealFFT(int n) : n_(n) {
         fwd_ = kiss_fftr_alloc(n, 0, nullptr, nullptr);
         inv_ = kiss_fftr_alloc(n, 1, nullptr, nullptr);
+        if (!fwd_ || !inv_) throw std::runtime_error("kiss_fftr_alloc failed");
     }
     ~RealFFT() {
         free(fwd_);
@@ -450,7 +452,7 @@ inline int next_pow2(int n) {
 inline int merge_fft_len(int n) {
     const int target = n + 16384;
     int best = next_pow2(target);
-    for (int p2 = 1; p2 <= best; p2 *= 2) {
+    for (int p2 = 2; p2 <= best; p2 *= 2) {
         for (int p3 = p2; p3 <= best; p3 *= 3) {
             for (int p5 = p3; p5 <= best; p5 *= 5) {
                 if (p5 >= target && p5 < best) best = p5;
