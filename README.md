@@ -8,6 +8,8 @@
 - GitHub: https://github.com/ZY-2012/LavaSR.AXERA
 - 上游: https://github.com/ysharma3501/LavaSR / https://huggingface.co/YatharthS/LavaSR
 
+> **AX650 板端实测说明**：AudioSR、LavaSR、FlowHigh 均已在 AX650N / NPU3 板端跑通。综合效果和速度最好的是 **LavaSR**：C++ 全链路 RTF ≈ 0.061（约 16× 实时），支持 8–48 kHz → 48 kHz 和降噪；FlowHigh 更轻量，适合 8/16 kHz → 48 kHz（Python RTF ≈ 0.24）；AudioSR 面向 5.12 s 语音超分（C++ RTF ≈ 1.43，完整链路相似度 ≈ 0.9917）。优先追求效果和速度选 LavaSR；需要轻量 BWE 或 5.12 s 语音片段时再看 FlowHigh / AudioSR。
+
 ## 目录
 
 - 快速开始
